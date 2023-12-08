@@ -1,16 +1,20 @@
 FROM elixir:1.15
 
-RUN apt-get update && apt-get install -y build-essential libpq-dev postgresql-client
+RUN apt-get update && apt-get install -y build-essential libpq-dev postgresql-client inotify-tools
 
 WORKDIR /phoenix
 
-# bundle up
-#COPY Gemfile Gemfile.lock ./
-#RUN bundle install
+# copy mix
+COPY mix.exs mix.lock ./
 
-# Entrypoint prepares the database.
-#ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+# setup
+RUN mix deps.get
+RUN mix assets.setup
+RUN mix deps.compile
+
+# prepare db
+RUN mix ecto.migrate
 
 # Start the server by default, this can be overwritten at runtime
-#EXPOSE 3000
-#CMD ["./bin/dev"]
+EXPOSE 4000
+CMD ["mix", "phx.server"]

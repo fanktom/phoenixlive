@@ -12,7 +12,8 @@
 		"vscode": {
 			"extensions": [
 				"esbenp.prettier-vscode",
-				"bradlc.vscode-tailwindcss"
+				"bradlc.vscode-tailwindcss",
+				"JakeBecker.elixir-ls"
 			]
 		}
 	},
